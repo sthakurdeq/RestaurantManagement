@@ -1,5 +1,6 @@
 from django.db import models
 from employee.models import AbstructBaseModel, User
+from django.core.validators import MaxValueValidator
 # Create your models here.
 
 
@@ -81,5 +82,5 @@ class Ratings(AbstructBaseModel):
     menu=models.ForeignKey(Menu, related_name="menu_ratings", on_delete=models.CASCADE)
     user=models.ForeignKey(User, related_name="user_ratings", on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True, verbose_name=("Timestamp"))
-    rating=models.IntegerField(choices=enumerate(range(11)), default=10)
+    rating=models.IntegerField(choices=enumerate(range(11)), default=10, validators=[MaxValueValidator(10)])
 
