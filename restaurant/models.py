@@ -28,6 +28,7 @@ class Item(AbstructBaseModel):
     class ITEM_TYPE:
         CHINEESE = "Chineese"
         SOUTH_INDIAN = "South Indian"
+    
     ITEM_TYPE_CHOICES = [
         (ITEM_TYPE.CHINEESE, "Chineese"),
         (ITEM_TYPE.SOUTH_INDIAN, "South Indian"),
