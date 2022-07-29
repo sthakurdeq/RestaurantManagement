@@ -9,53 +9,129 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Item',
+            name="Item",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created At')),
-                ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Updated At')),
-                ('name', models.CharField(max_length=70)),
-                ('type', models.CharField(choices=[('Chineese', 'Chineese'), ('South Indian', 'South Indian')], max_length=30)),
-                ('description', models.CharField(max_length=150)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="Created At"),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now=True, verbose_name="Updated At"),
+                ),
+                ("name", models.CharField(max_length=70)),
+                (
+                    "type",
+                    models.CharField(
+                        choices=[
+                            ("Chineese", "Chineese"),
+                            ("South Indian", "South Indian"),
+                        ],
+                        max_length=30,
+                    ),
+                ),
+                ("description", models.CharField(max_length=150)),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='Restaurant',
+            name="Restaurant",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created At')),
-                ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Updated At')),
-                ('name', models.CharField(max_length=50)),
-                ('street', models.CharField(max_length=100)),
-                ('city', models.CharField(max_length=50)),
-                ('state', models.CharField(max_length=50)),
-                ('country', models.CharField(max_length=50)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="Created At"),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now=True, verbose_name="Updated At"),
+                ),
+                ("name", models.CharField(max_length=50)),
+                ("street", models.CharField(max_length=100)),
+                ("city", models.CharField(max_length=50)),
+                ("state", models.CharField(max_length=50)),
+                ("country", models.CharField(max_length=50)),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='Menu',
+            name="Menu",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created At')),
-                ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Updated At')),
-                ('day', models.CharField(choices=[('MON', 'Monday'), ('TUE', 'South Indian'), ('WED', 'Wednesday'), ('THUR', 'Thursday'), ('FRI', 'Friday')], max_length=10)),
-                ('vote', models.CharField(choices=[(-1, 'Dislike'), (0, 'Neutral'), (1, 'Like')], default=-1, max_length=10)),
-                ('item', models.ManyToManyField(to='restaurant.Item')),
-                ('restaurants', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='restaurant_menu', to='restaurant.restaurant')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="Created At"),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now=True, verbose_name="Updated At"),
+                ),
+                (
+                    "day",
+                    models.CharField(
+                        choices=[
+                            ("MON", "Monday"),
+                            ("TUE", "South Indian"),
+                            ("WED", "Wednesday"),
+                            ("THUR", "Thursday"),
+                            ("FRI", "Friday"),
+                        ],
+                        max_length=10,
+                    ),
+                ),
+                (
+                    "vote",
+                    models.CharField(
+                        choices=[(-1, "Dislike"), (0, "Neutral"), (1, "Like")],
+                        default=-1,
+                        max_length=10,
+                    ),
+                ),
+                ("item", models.ManyToManyField(to="restaurant.Item")),
+                (
+                    "restaurants",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="restaurant_menu",
+                        to="restaurant.restaurant",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
     ]
