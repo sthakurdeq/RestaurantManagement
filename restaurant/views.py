@@ -23,9 +23,9 @@ class RestuarantViewSet(viewsets.ModelViewSet):
         response = {'message': 'Update function is not offered in this path.'}
         return Response(response, status=status.HTTP_403_FORBIDDEN)
 
-    def destroy(self, request, pk=None):
-        response = {'message': 'Delete function is not offered in this path.'}
-        return Response(response, status=status.HTTP_403_FORBIDDEN)
+    # def destroy(self, request, pk=None):
+    #     response = {'message': 'Delete function is not offered in this path.'}
+    #     return Response(response, status=status.HTTP_403_FORBIDDEN)
 
 @method_decorator(csrf_exempt, name='dispatch')
 class MenuViewSet(viewsets.ModelViewSet):

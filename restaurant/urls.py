@@ -15,7 +15,8 @@ item_detail = ItemViewSet.as_view({'get': 'retrieve'})
 menu_list = MenuViewSet.as_view({'get': 'list', 'post': 'create'})
 menu_detail = MenuViewSet.as_view({'get': 'retrieve'})
 
-router.register('', RestuarantViewSet, basename='restaurant')
-router.register('menu', MenuViewSet, basename='menu')
+router.register('restaurants', RestuarantViewSet, basename='restaurant')
+router.register('restaurants/<str:restaurant_id>/menu', MenuViewSet, basename='menu')
 router.register('item', ItemViewSet, basename='item')
+
 urlpatterns = router.urls

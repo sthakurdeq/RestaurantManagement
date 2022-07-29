@@ -44,6 +44,7 @@ class Menu(AbstructBaseModel):
     day : Days ('MON','TUE','WED','THUR','FRI')
     item : many to many field to link item to restaurant menu
     '''
+
     class DAY   :
         MON = "MON"
         TUE = "TUE"
@@ -63,8 +64,10 @@ class Menu(AbstructBaseModel):
         (0,"Neutral"),
         (1,"Like")
     ]
-    restaurant_name=models.ForeignKey(Restaurant,on_delete=models.CASCADE)
+    
+    restaurants=models.ForeignKey(Restaurant, related_name="restaurant_menu", on_delete=models.CASCADE)
     day=models.CharField(max_length=10,choices=DAY_CHOICES)
-    vote=models.IntegerField(choices=VOTE_CHOICES)
+    vote=models.CharField(choices=VOTE_CHOICES, max_length=10, default=VOTE_CHOICES[0][0])
     item=models.ManyToManyField(Item)
+
 
