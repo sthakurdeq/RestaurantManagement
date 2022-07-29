@@ -1,14 +1,11 @@
 from django.urls import path
 from .views import UserViewSet
-# from rest_framework.routers import DefaultRouter
+from rest_framework.routers import DefaultRouter
 
-# router = DefaultRouter()
+router = DefaultRouter()
 
-# user = UserViewSet.as_view({'post': 'create'})
-urlpatterns = [
+user_list = UserViewSet.as_view({'post': 'create','get': 'list'})
+user_detail = UserViewSet.as_view({'get': 'retrieve'})
 
-   path('create', UserViewSet.as_view({'post': 'create'})),
-]
-
-# router.register('item', UserViewSet, basename='user')
-# urlpatterns = router.urls
+router.register('', UserViewSet, basename='user')
+urlpatterns = router.urls
