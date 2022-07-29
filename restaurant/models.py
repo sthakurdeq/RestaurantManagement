@@ -64,6 +64,7 @@ class Menu(AbstructBaseModel):
         (0,"Neutral"),
         (1,"Like")
     ]
+    
     restaurants=models.ForeignKey(Restaurant, related_name="restaurant_menu", on_delete=models.CASCADE)
     day=models.CharField(max_length=10,choices=DAY_CHOICES)
     vote=models.CharField(choices=VOTE_CHOICES, max_length=10, default=VOTE_CHOICES[0][0])
