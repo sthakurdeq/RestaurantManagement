@@ -28,6 +28,7 @@ class Item(AbstructBaseModel):
     class ITEM_TYPE:
         CHINEESE = "Chineese"
         SOUTH_INDIAN = "South Indian"
+    
     ITEM_TYPE_CHOICES = [
         (ITEM_TYPE.CHINEESE, "Chineese"),
         (ITEM_TYPE.SOUTH_INDIAN, "South Indian"),
@@ -43,6 +44,7 @@ class Menu(AbstructBaseModel):
     day : Days ('MON','TUE','WED','THUR','FRI')
     item : many to many field to link item to restaurant menu
     '''
+
     class DAY   :
         MON = "MON"
         TUE = "TUE"
@@ -66,4 +68,5 @@ class Menu(AbstructBaseModel):
     day=models.CharField(max_length=10,choices=DAY_CHOICES)
     vote=models.CharField(choices=VOTE_CHOICES, max_length=10, default=VOTE_CHOICES[0][0])
     item=models.ManyToManyField(Item)
+
 
