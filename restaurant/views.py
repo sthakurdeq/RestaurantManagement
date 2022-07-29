@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.authentication import TokenAuthentication
 
 from restaurant.models import Ratings, Restaurant, Item, Menu
 from restaurant.serializers import RatingSerializer, RestaurantSerializer, MenuSerializer, ItemSerializer
@@ -13,7 +13,7 @@ from restaurant.serializers import RatingSerializer, RestaurantSerializer, MenuS
 @method_decorator(csrf_exempt, name='dispatch')
 class RestuarantViewSet(viewsets.ModelViewSet):
     queryset = Restaurant.objects.all()
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    authentication_classes = [TokenAuthentication]
     serializer_class = RestaurantSerializer
     
     def update(self, request, pk=None):
@@ -31,13 +31,17 @@ class RestuarantViewSet(viewsets.ModelViewSet):
 @method_decorator(csrf_exempt, name='dispatch')
 class MenuViewSet(viewsets.ModelViewSet):
     queryset = Menu.objects.all()
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    # authentication_classes = [TokenAuthentication]
     serializer_class = MenuSerializer
 
-
+    def list(self, request):
+        # Note the use of `get_queryset()` instead of `self.queryset`
+        queryset = self.get_queryset()
+        serializer = MenuSerializer(queryset, many=True, fields=['id', 'restaurants', 'day', 'vote', 'items'])
+        return Response(serializer.data)
 @method_decorator(csrf_exempt, name='dispatch')
 class TodayMenuViewSet(viewsets.ReadOnlyModelViewSet):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    # authentication_classes = [TokenAuthentication]
     today = datetime.today()
     day = {
         1 : "MON",
@@ -53,7 +57,7 @@ class TodayMenuViewSet(viewsets.ReadOnlyModelViewSet):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class ItemViewSet(viewsets.ModelViewSet):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    # authentication_classes = [TokenAuthentication]
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
     
