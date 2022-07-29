@@ -8,9 +8,15 @@ class RestaurantSerializer(serializers.ModelSerializer):
 
 
 class MenuSerializer(serializers.ModelSerializer):
+    items = serializers.SerializerMethodField()
     class Meta:
         model = Menu
-        fields = ['id', 'restaurant_name', 'day', 'vote', 'item']
+        fields = ['id', 'restaurants', 'day', 'vote', 'items']
+
+    def get_items(self, obj):
+        # breakpoint()
+        return obj.item.all().values("id", "name")
+
 
 
 class ItemSerializer(serializers.ModelSerializer):

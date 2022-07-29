@@ -37,6 +37,9 @@ class Item(AbstructBaseModel):
     type=models.CharField(max_length=30,choices=ITEM_TYPE_CHOICES)
     description=models.CharField(max_length=150)
 
+    def __str__(self) -> str:
+        return self.name
+
 class Menu(AbstructBaseModel):
     '''
     Menu model to link items to restaurant
@@ -65,9 +68,9 @@ class Menu(AbstructBaseModel):
         (1,"Like")
     ]
     
-    restaurants=models.ForeignKey(Restaurant, related_name="restaurant_menu", on_delete=models.CASCADE)
-    day=models.CharField(max_length=10,choices=DAY_CHOICES)
-    vote=models.CharField(choices=VOTE_CHOICES, max_length=10, default=VOTE_CHOICES[0][0])
-    item=models.ManyToManyField(Item)
+    restaurants = models.ForeignKey(Restaurant, related_name="restaurant_menu", on_delete=models.CASCADE)
+    day = models.CharField(max_length=10,choices=DAY_CHOICES)
+    vote = models.CharField(choices=VOTE_CHOICES, max_length=10, default=VOTE_CHOICES[0][1])
+    item = models.ManyToManyField(Item, null=True, blank=True)
 
 

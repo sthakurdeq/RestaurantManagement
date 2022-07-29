@@ -32,17 +32,17 @@ class MenuViewSet(viewsets.ModelViewSet):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
     
-    def update(self, request, pk=None):
-        response = {'message': 'Update function is not offered in this path.'}
-        return Response(response, status=status.HTTP_403_FORBIDDEN)
+    # def update(self, request, pk=None):
+    #     response = {'message': 'Update function is not offered in this path.'}
+    #     return Response(response, status=status.HTTP_403_FORBIDDEN)
 
-    def partial_update(self, request, pk=None):
-        response = {'message': 'Update function is not offered in this path.'}
-        return Response(response, status=status.HTTP_403_FORBIDDEN)
+    # def partial_update(self, request, pk=None):
+    #     response = {'message': 'Update function is not offered in this path.'}
+    #     return Response(response, status=status.HTTP_403_FORBIDDEN)
 
-    def destroy(self, request, pk=None):
-        response = {'message': 'Delete function is not offered in this path.'}
-        return Response(response, status=status.HTTP_403_FORBIDDEN)
+    # def destroy(self, request, pk=None):
+    #     response = {'message': 'Delete function is not offered in this path.'}
+    #     return Response(response, status=status.HTTP_403_FORBIDDEN)
 
 @method_decorator(csrf_exempt, name='dispatch')
 class ItemViewSet(viewsets.ModelViewSet):
