@@ -1,5 +1,6 @@
 from django.db import models
-from employee.models import AbstructBaseModel
+from employee.models import AbstructBaseModel, User
+from django.core.validators import MaxValueValidator
 # Create your models here.
 
 
@@ -56,7 +57,7 @@ class Menu(AbstructBaseModel):
         FRI = "FRI"
     DAY_CHOICES = [
         (DAY.MON, "Monday"),
-        (DAY.TUE, "South Indian"),
+        (DAY.TUE, "Tuesday"),
         (DAY.WED, "Wednesday"),
         (DAY.THUR, "Thursday"),
         (DAY.FRI,'Friday')
@@ -73,4 +74,16 @@ class Menu(AbstructBaseModel):
     vote = models.CharField(choices=VOTE_CHOICES, max_length=10, default=VOTE_CHOICES[0][1])
     item = models.ManyToManyField(Item, null=True, blank=True)
 
+class Ratings(AbstructBaseModel):
+    '''
+    Rating model to link menu to rating
+    menu : Restaurant menu which is to be voted
+    user : User linked using many to many field
+    rating : Rating between 0-10
+    timestamp : Todays date time
+    '''
+    menu=models.ForeignKey(Menu, related_name="menu_ratings", on_delete=models.CASCADE)
+    user=models.ForeignKey(User, related_name="user_ratings", on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True, verbose_name=("Timestamp"))
+    rating=models.IntegerField(choices=enumerate(range(11)), default=10, validators=[MaxValueValidator(10)])
 

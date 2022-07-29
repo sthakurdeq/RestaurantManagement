@@ -1,4 +1,4 @@
-from restaurant.models import Restaurant, Item, Menu
+from restaurant.models import Ratings, Restaurant, Item, Menu
 from rest_framework import serializers
 
 class RestaurantSerializer(serializers.ModelSerializer):
@@ -23,3 +23,8 @@ class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
         fields = ['id', 'name', 'type', 'description']
+
+class RatingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ratings
+        fields = ['menu','timestamp','user','rating'] 
