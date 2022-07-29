@@ -46,8 +46,8 @@ class Menu(AbstructBaseModel):
     '''
     DAY=(('MON','Monday'),('TUE','Tuesday'),('WED','Wednesday'),('THUR','Thursday'),('FRI','Friday'))
     VOTE=((-1,-1),(0,0),(1,1))
-    restaurant_name=models.ForeignKey(Restaurant,on_delete=models.CASCADE)
-    day=models.CharField(max_length=10,choices=DAY)
-    vote=models.IntegerField(choices=VOTE)
-    item=models.ManyToManyField(Item)
+    restaurant_name = models.ForeignKey(Restaurant,on_delete=models.CASCADE)
+    day = models.CharField(max_length=10,choices=DAY)
+    vote = models.IntegerField(choices=VOTE)
+    item = models.ManyToManyField(Item)
 
