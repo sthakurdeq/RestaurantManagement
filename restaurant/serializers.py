@@ -1,15 +1,14 @@
-from rest_framework.exceptions import ValidationError
-from rest_framework.response import Response
-
-from restaurant.models import Ratings, Restaurant, Item, Menu
 from rest_framework import serializers
+
+from restaurant.models import Item, Menu, Ratings, Restaurant
 
 
 class RestaurantSerializer(serializers.ModelSerializer):
-    '''
+    """
     Restaurant serializer with fields to controll displayed fields
     fields: id, name, state, city, country, street
-    '''
+    """
+
     class Meta:
         model = Restaurant
         fields = ["id", "name", "state", "city", "country", "street"]
@@ -37,10 +36,11 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
 
 
 class MenuSerializer(DynamicFieldsModelSerializer):
-    '''
+    """
     Menu serializer with fields to controll displayed fields
     fields: id, restaurants, day, vote, item, items
-    '''
+    """
+
     items = serializers.SerializerMethodField()
 
     class Meta:
@@ -48,27 +48,29 @@ class MenuSerializer(DynamicFieldsModelSerializer):
         fields = ["id", "restaurants", "day", "item", "items"]
 
     def get_items(self, obj):
-        '''
+        """
         Method that returns id,name of items
-        '''
+        """
         return obj.item.all().values("id", "name")
 
 
 class ItemSerializer(serializers.ModelSerializer):
-    '''
+    """
     Item serializer with fields to controll displayed fields
     fields: id, name, type, descripion
-    '''
+    """
+
     class Meta:
         model = Item
         fields = ["id", "name", "type", "description"]
 
 
 class RatingSerializer(serializers.ModelSerializer):
-    '''
+    """
     Rating serializer with fields to controll displayed fields
     fields: menu, timestamp, user, rating
-    '''
+    """
+
     class Meta:
         model = Ratings
         fields = ["menu", "user", "vote"]
