@@ -71,6 +71,21 @@ class RatingSerializer(serializers.ModelSerializer):
     fields: menu, timestamp, user, rating
     """
 
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
+    class Meta:
+        model = Ratings
+        fields = ["menu", "user", "vote"]
+
+
+class ListRatingSerializer(serializers.ModelSerializer):
+    """
+    Rating serializer with fields to controll displayed fields
+    fields: menu, timestamp, user, rating
+    """
+
+    user = serializers.CharField(source="user.username")
+
     class Meta:
         model = Ratings
         fields = ["menu", "user", "vote"]
