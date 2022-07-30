@@ -1,3 +1,3 @@
 from django.shortcuts import render
-from restaurant.views import *
 
+from restaurant.views import *
