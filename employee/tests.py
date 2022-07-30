@@ -60,3 +60,76 @@ class TestUserAPIs(APITestCase):
             assert employee.email == result["email"]
             assert employee.password == result["password"]
 
+
+    
+    @patch(
+        "rest_framework.authtoken.models.Token",
+        MagicMock(return_value=headers["Authorization"]),
+    )
+    def test_employee_detail(self):
+        employee = UserFactory()
+        res = self.client.get(
+            reverse("user-detail", args=[str(employee.id)]),
+            format="json",
+            HTTP_AUTHORIZATION="Token token_key",
+        )
+        result_data = res.json()
+        assert res.status_code == status.HTTP_200_OK
+        assert str(employee.id) == result_data['id']
+        assert employee.first_name == result_data["first_name"]
+        assert employee.last_name == result_data["last_name"]
+        assert employee.email == result_data["email"]
+        assert employee.password == result_data["password"]
+        
+
+    @patch(
+        "rest_framework.authtoken.models.Token",
+        MagicMock(return_value=headers["Authorization"]),
+    )
+    def test_employee_partial_update(self):
+        employee = UserFactory()
+        res = self.client.patch(
+            reverse("user-detail", args=[str(employee.id)]),
+            format="json",
+            HTTP_AUTHORIZATION="Token token_key",
+        )
+        expected_result = {"message": "Update function is not offered in this path."}
+        result_data = res.json()
+        assert res.status_code == status.HTTP_403_FORBIDDEN
+        assert expected_result == result_data
+
+    @patch(
+        "rest_framework.authtoken.models.Token",
+        MagicMock(return_value=headers["Authorization"]),
+    )
+    def test_employee_update(self):
+        employee = UserFactory()
+        res = self.client.put(
+            reverse("user-detail", args=[str(employee.id)]),
+            format="json",
+            HTTP_AUTHORIZATION="Token token_key",
+        )
+        expected_result = {"message": "Update function is not offered in this path."}
+        result_data = res.json()
+        assert res.status_code == status.HTTP_403_FORBIDDEN
+        assert expected_result == result_data
+
+    @patch(
+        "rest_framework.authtoken.models.Token",
+        MagicMock(return_value=headers["Authorization"]),
+    )
+    def test_employee_delete(self):
+        employee = UserFactory()
+        res = self.client.delete(
+            reverse("user-detail", args=[str(employee.id)]),
+            format="json",
+            HTTP_AUTHORIZATION="Token token_key",
+        )
+        # breakpoint()
+        expected_result = {"message": "Delete function is not offered in this path."}
+        result_data = res.json()
+        assert res.status_code == status.HTTP_403_FORBIDDEN
+        assert expected_result == result_data
+
+
+
