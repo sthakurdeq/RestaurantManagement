@@ -1,4 +1,10 @@
-from restaurant.views import RatingViewSet, RestuarantViewSet, ItemViewSet, MenuViewSet, TodayMenuViewSet
+from restaurant.views import (
+    RatingViewSet,
+    RestuarantViewSet,
+    ItemViewSet,
+    MenuViewSet,
+    TodayMenuViewSet,
+)
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
@@ -22,10 +28,10 @@ rating_detail = RatingViewSet.as_view({'get': 'retrieve'})
 # todays menu list api
 today_menu_list = TodayMenuViewSet.as_view({'get': 'list'})
 
-router.register('restaurants', RestuarantViewSet, basename='restaurant')
-router.register('menu', MenuViewSet, basename='menu')
-router.register('item', ItemViewSet, basename='item')
-router.register('rating', RatingViewSet, basename='rating')
-router.register('today_menu', TodayMenuViewSet, basename='today_menu')
+router.register("restaurants", RestuarantViewSet, basename="restaurant")
+router.register("menu", MenuViewSet, basename="menu")
+router.register("item", ItemViewSet, basename="item")
+router.register("rating", RatingViewSet, basename="rating")
+router.register("today_menu", TodayMenuViewSet, basename="today_menu")
 
 urlpatterns = router.urls

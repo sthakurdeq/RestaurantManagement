@@ -7,19 +7,24 @@ from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 
 from restaurant.models import Ratings, Restaurant, Item, Menu
-from restaurant.serializers import RatingSerializer, RestaurantSerializer, MenuSerializer, ItemSerializer
+from restaurant.serializers import (
+    RatingSerializer,
+    RestaurantSerializer,
+    MenuSerializer,
+    ItemSerializer,
+)
 
 
-@method_decorator(csrf_exempt, name='dispatch')
+@method_decorator(csrf_exempt, name="dispatch")
 class RestuarantViewSet(viewsets.ModelViewSet):
     '''
     Restaurant View Accept GET, POST, DELETE
     return fields as per the RestaurantSerializer
     '''
     queryset = Restaurant.objects.all()
-    authentication_classes = [TokenAuthentication]
+    # authentication_classes = [TokenAuthentication]
     serializer_class = RestaurantSerializer
-    
+
     def update(self, request, pk=None):
         # returns forbidden when PUT request
         response = {'message': 'Update function is not offered in this path.'}
@@ -40,13 +45,24 @@ class MenuViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     serializer_class = MenuSerializer
 
+    def create(self, request):
+        # Note the use of `get_queryset()` instead of `self.queryset`
+        data = request.data
+        serializer = MenuSerializer(
+            data=data, fields=["id", "restaurants", "day", "item"]
+        )
+        if serializer.is_valid(raise_exception=True):
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
     def list(self, request):
         # Note the use of `get_queryset()` instead of `self.queryset`
         queryset = self.get_queryset()
-        serializer = MenuSerializer(queryset, many=True, fields=['id', 'restaurants', 'day', 'vote', 'items'])
+        serializer = MenuSerializer(
+            queryset, many=True, fields=["id", "restaurants", "day", "items"]
+        )
         return Response(serializer.data)
 
-@method_decorator(csrf_exempt, name='dispatch')
+@method_decorator(csrf_exempt, name="dispatch")
 class TodayMenuViewSet(viewsets.ReadOnlyModelViewSet):
     '''
     Menu View Accept GET
@@ -55,18 +71,23 @@ class TodayMenuViewSet(viewsets.ReadOnlyModelViewSet):
     authentication_classes = [TokenAuthentication]
     today = datetime.today()
     day = {
-        1 : "MON",
-        2 : "TUE",
-        3 : "WED",
-        4 : "THUR",
-        5 : "FRI",
+        1: "MON",
+        2: "TUE",
+        3: "WED",
+        4: "THUR",
+        5: "FRI",
     }
     weekday = datetime.now().weekday()
-    queryset = Menu.objects.filter(created_at__year=today.year, created_at__month=today.month, created_at__day=today.day, day=day.get(weekday))
+    queryset = Menu.objects.filter(
+        created_at__year=today.year,
+        created_at__month=today.month,
+        created_at__day=today.day,
+        day=day.get(weekday),
+    )
     serializer_class = MenuSerializer
 
 
-@method_decorator(csrf_exempt, name='dispatch')
+@method_decorator(csrf_exempt, name="dispatch")
 class ItemViewSet(viewsets.ModelViewSet):
     '''
     Item View Accept GET, POST
@@ -75,7 +96,7 @@ class ItemViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
-    
+
     def update(self, request, pk=None):
         # returns forbidden when PUT request
         response = {'message': 'Update function is not offered in this path.'}
@@ -92,7 +113,7 @@ class ItemViewSet(viewsets.ModelViewSet):
         return Response(response, status=status.HTTP_403_FORBIDDEN)
 
 
-@method_decorator(csrf_exempt, name='dispatch')
+@method_decorator(csrf_exempt, name="dispatch")
 class RatingViewSet(viewsets.ModelViewSet):
     '''
     Rating View Accept GET, POST
@@ -100,7 +121,7 @@ class RatingViewSet(viewsets.ModelViewSet):
     '''
     queryset = Ratings.objects.all()
     serializer_class = RatingSerializer
-    
+
     def update(self, request, pk=None):
         # returns forbidden when PUT request
         response = {'message': 'Update function is not offered in this path.'}

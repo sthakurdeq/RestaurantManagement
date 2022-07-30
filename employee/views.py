@@ -1,6 +1,4 @@
-from django.shortcuts import render
 
-# Create your views here.
 from .models import User
 from .serializers import UserSerializer
 from rest_framework import viewsets
@@ -9,7 +7,8 @@ from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
-@method_decorator(csrf_exempt, name='dispatch')
+
+@method_decorator(csrf_exempt, name="dispatch")
 class UserViewSet(viewsets.ModelViewSet):
     """
     Create a Users Accepts POST,GET
