@@ -110,9 +110,12 @@ class TestItemAPIs(APITestCase):
     )
     def test_item_delete(self):
         item = ItemFactory()
+        expected_result = {'message': 'Delete function is not offered in this path.'}
         res = self.client.delete(
             reverse("item-detail", args=[str(item.id)]),
             format="json",
             HTTP_AUTHORIZATION="Token token_key",
         )
-        assert res.status_code == status.HTTP_204_NO_CONTENT
+        result_data = res.json()
+        assert res.status_code == status.HTTP_403_FORBIDDEN
+        assert expected_result == result_data
