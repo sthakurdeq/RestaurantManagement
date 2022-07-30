@@ -1,3 +1,62 @@
 from django.test import TestCase
+from unittest.mock import MagicMock, patch
 
+from django.urls import reverse
+from rest_framework import status
+from rest_framework.test import APITestCase
+from .factory_boy import UserFactory
 # Create your tests here.
+
+
+class TestUserAPIs(APITestCase):
+    headers = {"Authorization": "Token token_key"}
+    
+    @patch( 
+        "rest_framework.authtoken.models.Token",
+        MagicMock(return_value=headers["Authorization"]),
+    )
+    def test_employee_create(self):
+        data = {
+            "username": "string",
+            "first_name": "string",
+            "last_name": "string",
+            "email": "user@example.com",
+            "password": "string"
+            }
+        res = self.client.post(
+            reverse("user-list"),
+            data=data,
+            format="json",
+            HTTP_AUTHORIZATION="Token token_key",
+        )
+        result_data = res.json()
+        assert res.status_code == status.HTTP_201_CREATED
+        assert result_data["username"] == data["username"]
+        assert result_data["first_name"] == data["first_name"]
+        assert result_data["last_name"] == data["last_name"]
+        assert result_data["email"] == data["email"]
+        assert result_data["password"] == data["password"]
+
+    @patch( 
+        "rest_framework.authtoken.models.Token",
+        MagicMock(return_value=headers["Authorization"]),
+    )
+    def test_employee_list(self):
+        created_employee = [UserFactory() for i in range(3)]
+        res = self.client.get(
+            reverse("user-list"),
+            format="json",
+            HTTP_AUTHORIZATION="Token token_key",
+        )
+
+        result_data = res.json()
+        assert res.status_code == status.HTTP_200_OK
+        assert len(result_data) == len(created_employee)
+        for employee, result in zip(created_employee, result_data):
+
+            assert str(employee.id) == result['id']
+            assert employee.first_name == result["first_name"]
+            assert employee.last_name == result["last_name"]
+            assert employee.email == result["email"]
+            assert employee.password == result["password"]
+
