@@ -60,6 +60,15 @@ Installation requires Python 3.8 or above
 - Getting results for current day
 
 ## Docker
+Install docker using the below command
+```bash
+  sudo apt install docker.io
+  sudo snap install docker
+```
+Check the docker version
+```bash
+  docker --version
+```
 ## Enhancement
 
 - Create analysis report based on the data
