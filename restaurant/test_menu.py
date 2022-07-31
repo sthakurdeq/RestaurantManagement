@@ -8,10 +8,11 @@ from restaurant.factory_boy import ItemFactory, MenuFactory, RestaurantFactory
 
 
 class TestMenuAPIs(APITestCase):
-    '''
+    """
     Test the Menu api
     GET, POST, PUT, PATCH, DELETE
-    '''
+    """
+
     headers = {"Authorization": "Token token_key"}
 
     @patch(
@@ -20,7 +21,7 @@ class TestMenuAPIs(APITestCase):
     )
     def test_menu_list(self):
         # method to test the getting list of menus
-        created_menu=[]
+        created_menu = []
         for j in range(3):
             restaurant = RestaurantFactory()
             menu = MenuFactory(restaurants=restaurant)
@@ -40,9 +41,9 @@ class TestMenuAPIs(APITestCase):
             assert str(menu_data.id) == result["id"]
             assert str(menu_data.restaurants_id) == result["restaurants"]
             assert menu_data.day == result["day"]
-            item_ids = [item_result['id'] for item_result in result["items"]]
+            item_ids = [item_result["id"] for item_result in result["items"]]
             assert item_ids == [str(a.id) for a in menu_data.item.all()]
-        
+
     # @patch(
     #     "rest_framework.authtoken.models.Token",
     #     MagicMock(return_value=headers["Authorization"]),

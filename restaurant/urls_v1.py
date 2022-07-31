@@ -1,8 +1,13 @@
 from rest_framework.routers import DefaultRouter
 
-from restaurant.views import (ItemViewSet, MenuViewSet, RatingViewSet,
-                              RestuarantViewSet, ResultViewSet,
-                              TodayMenuViewSet)
+from restaurant.views import (
+    ItemViewSet,
+    MenuViewSet,
+    RatingViewSet,
+    RestuarantViewSet,
+    ResultViewSet,
+    TodayMenuViewSet,
+)
 
 router = DefaultRouter()
 

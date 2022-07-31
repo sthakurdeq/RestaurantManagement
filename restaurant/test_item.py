@@ -8,10 +8,11 @@ from restaurant.factory_boy import ItemFactory
 
 
 class TestItemAPIs(APITestCase):
-    '''
+    """
     Test the Items api
     GET, POST, PUT, PATCH, DELETE
-    '''
+    """
+
     headers = {"Authorization": "Token token_key"}
 
     @patch(

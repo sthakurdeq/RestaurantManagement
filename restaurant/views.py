@@ -8,9 +8,13 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 
 from restaurant.models import Item, Menu, Ratings, Restaurant
-from restaurant.serializers import (ItemSerializer, ListRatingSerializer,
-                                    MenuSerializer, RatingSerializer,
-                                    RestaurantSerializer)
+from restaurant.serializers import (
+    ItemSerializer,
+    ListRatingSerializer,
+    MenuSerializer,
+    RatingSerializer,
+    RestaurantSerializer,
+)
 
 
 @method_decorator(csrf_exempt, name="dispatch")
@@ -124,6 +128,7 @@ class RatingViewSet(viewsets.ModelViewSet):
     Rating View Accept GET, POST
     return fields as per the RatingSerializer
     """
+
     authentication_classes = [TokenAuthentication]
     queryset = Ratings.objects.all()
     serializer_class = RatingSerializer
@@ -172,7 +177,7 @@ class ResultViewSet(viewsets.ModelViewSet):
     """
     Result View Accept GET, POST
     """
-    
+
     authentication_classes = [TokenAuthentication]
     today = datetime.today()
     queryset = Ratings.objects.filter(

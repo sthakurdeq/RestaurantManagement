@@ -10,10 +10,11 @@ from .factory_boy import UserFactory
 
 
 class TestUserAPIs(APITestCase):
-    '''
+    """
     Test the Employee api
     GET, POST, PUT, PATCH, DELETE
-    '''
+    """
+
     headers = {"Authorization": "Token token_key"}
 
     @patch(

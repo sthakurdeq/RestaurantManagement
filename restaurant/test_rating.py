@@ -4,14 +4,20 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from restaurant.factory_boy import ItemFactory, MenuFactory, RatingsFactory, RestaurantFactory
+from restaurant.factory_boy import (
+    ItemFactory,
+    MenuFactory,
+    RatingsFactory,
+    RestaurantFactory,
+)
 
 
 class TestRatingsAPIs(APITestCase):
-    '''
+    """
     Test the Rating api
     GET, POST, PUT, PATCH, DELETE
-    '''
+    """
+
     headers = {"Authorization": "Token token_key"}
 
     @patch(
@@ -20,7 +26,7 @@ class TestRatingsAPIs(APITestCase):
     )
     def test_rating_list(self):
         # method to test the getting list of ratings
-        created_rating=[]
+        created_rating = []
         for j in range(3):
             restaurant = RestaurantFactory()
             menu = MenuFactory(restaurants=restaurant)
@@ -28,7 +34,7 @@ class TestRatingsAPIs(APITestCase):
             menu.item.add(created_item[0])
             menu.item.add(created_item[1])
             menu.item.add(created_item[2])
-            rating=RatingsFactory(menu=menu)
+            rating = RatingsFactory(menu=menu)
             created_rating.append(rating)
         res = self.client.get(
             reverse("rating-list"),
@@ -79,7 +85,7 @@ class TestRatingsAPIs(APITestCase):
         menu.item.add(created_item[0])
         menu.item.add(created_item[1])
         menu.item.add(created_item[2])
-        rating=RatingsFactory(menu=menu)
+        rating = RatingsFactory(menu=menu)
         res = self.client.get(
             reverse("rating-detail", args=[str(rating.id)]),
             format="json",
@@ -103,7 +109,7 @@ class TestRatingsAPIs(APITestCase):
         menu.item.add(created_item[0])
         menu.item.add(created_item[1])
         menu.item.add(created_item[2])
-        rating=RatingsFactory(menu=menu)
+        rating = RatingsFactory(menu=menu)
         res = self.client.patch(
             reverse("rating-detail", args=[str(rating.id)]),
             format="json",
@@ -126,7 +132,7 @@ class TestRatingsAPIs(APITestCase):
         menu.item.add(created_item[0])
         menu.item.add(created_item[1])
         menu.item.add(created_item[2])
-        rating=RatingsFactory(menu=menu)
+        rating = RatingsFactory(menu=menu)
         res = self.client.put(
             reverse("rating-detail", args=[str(rating.id)]),
             format="json",
@@ -149,7 +155,7 @@ class TestRatingsAPIs(APITestCase):
         menu.item.add(created_item[0])
         menu.item.add(created_item[1])
         menu.item.add(created_item[2])
-        rating=RatingsFactory(menu=menu)
+        rating = RatingsFactory(menu=menu)
         expected_result = {"message": "Delete function is not offered in this path."}
         res = self.client.delete(
             reverse("rating-detail", args=[str(rating.id)]),
