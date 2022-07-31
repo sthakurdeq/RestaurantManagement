@@ -4,48 +4,46 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from restaurant.factory_boy import RestaurantFactory
+from restaurant.factory_boy import ItemFactory
 
 
-class TestRestaurantAPIs(APITestCase):
+class TestItemAPIs(APITestCase):
     headers = {"Authorization": "Token token_key"}
 
     @patch(
         "rest_framework.authtoken.models.Token",
         MagicMock(return_value=headers["Authorization"]),
     )
-    def test_restaurant_list(self):
-        created_restaurants = [RestaurantFactory() for i in range(3)]
+    def test_item_list(self):
+        created_item = [ItemFactory() for i in range(3)]
         res = self.client.get(
-            reverse("restaurant-list"),
+            reverse("item-list"),
             format="json",
             HTTP_AUTHORIZATION="Token token_key",
         )
         result_data = res.json()
         assert res.status_code == status.HTTP_200_OK
-        assert len(result_data) == len(created_restaurants)
-        for restaurant, result in zip(created_restaurants, result_data):
-            assert str(restaurant.id) == result["id"]
-            assert restaurant.name == result["name"]
-            assert restaurant.street == result["street"]
-            assert restaurant.city == result["city"]
-            assert restaurant.state == result["state"]
-            assert restaurant.country == result["country"]
+        assert len(result_data) == len(created_item)
+        for item, result in zip(created_item, result_data):
+            assert str(item.id) == result["id"]
+            assert item.name == result["name"]
+            assert item.type == result["type"]
+            assert item.description == result["description"]
+
 
     @patch(
         "rest_framework.authtoken.models.Token",
         MagicMock(return_value=headers["Authorization"]),
     )
-    def test_restaurant_creation(self):
+    def test_item_creation(self):
         data = {
-            "name": "ICH",
-            "state": "MP",
-            "city": "Indore",
-            "country": "India",
-            "street": "MG road",
+            "name": "Idli",
+            "type": "Chineese",
+            "description": "Very Delicious",
+
         }
         res = self.client.post(
-            reverse("restaurant-list"),
+            reverse("item-list"),
             data=data,
             format="json",
             HTTP_AUTHORIZATION="Token token_key",
@@ -53,39 +51,35 @@ class TestRestaurantAPIs(APITestCase):
         result_data = res.json()
         assert res.status_code == status.HTTP_201_CREATED
         assert result_data["name"] == data["name"]
-        assert result_data["street"] == data["street"]
-        assert result_data["city"] == data["city"]
-        assert result_data["country"] == data["country"]
-        assert result_data["state"] == data["state"]
+        assert result_data["type"] == data["type"]
+        assert result_data["description"] == data["description"]
 
     @patch(
         "rest_framework.authtoken.models.Token",
         MagicMock(return_value=headers["Authorization"]),
     )
-    def test_restaurant_detail(self):
-        restaurant = RestaurantFactory()
+    def test_item_detail(self):
+        item = ItemFactory()
         res = self.client.get(
-            reverse("restaurant-detail", args=[str(restaurant.id)]),
+            reverse("item-detail", args=[str(item.id)]),
             format="json",
             HTTP_AUTHORIZATION="Token token_key",
         )
         result_data = res.json()
         assert res.status_code == status.HTTP_200_OK
-        assert str(restaurant.id) == result_data["id"]
-        assert restaurant.name == result_data["name"]
-        assert restaurant.street == result_data["street"]
-        assert restaurant.city == result_data["city"]
-        assert restaurant.state == result_data["state"]
-        assert restaurant.country == result_data["country"]
+        assert str(item.id) == result_data["id"]
+        assert item.name == result_data["name"]
+        assert item.type == result_data["type"]
+        assert item.description == result_data["description"]
 
     @patch(
         "rest_framework.authtoken.models.Token",
         MagicMock(return_value=headers["Authorization"]),
     )
-    def test_restaurant_partial_update(self):
-        restaurant = RestaurantFactory()
+    def test_item_partial_update(self):
+        item = ItemFactory()
         res = self.client.patch(
-            reverse("restaurant-detail", args=[str(restaurant.id)]),
+            reverse("item-detail", args=[str(item.id)]),
             format="json",
             HTTP_AUTHORIZATION="Token token_key",
         )
@@ -98,10 +92,10 @@ class TestRestaurantAPIs(APITestCase):
         "rest_framework.authtoken.models.Token",
         MagicMock(return_value=headers["Authorization"]),
     )
-    def test_restaurant_update(self):
-        restaurant = RestaurantFactory()
+    def test_item_update(self):
+        item = ItemFactory()
         res = self.client.put(
-            reverse("restaurant-detail", args=[str(restaurant.id)]),
+            reverse("item-detail", args=[str(item.id)]),
             format="json",
             HTTP_AUTHORIZATION="Token token_key",
         )
@@ -114,12 +108,14 @@ class TestRestaurantAPIs(APITestCase):
         "rest_framework.authtoken.models.Token",
         MagicMock(return_value=headers["Authorization"]),
     )
-    def test_restaurant_delete(self):
-        restaurant = RestaurantFactory()
+    def test_item_delete(self):
+        item = ItemFactory()
+        expected_result = {'message': 'Delete function is not offered in this path.'}
         res = self.client.delete(
-            reverse("restaurant-detail", args=[str(restaurant.id)]),
+            reverse("item-detail", args=[str(item.id)]),
             format="json",
             HTTP_AUTHORIZATION="Token token_key",
         )
-        assert res.status_code == status.HTTP_204_NO_CONTENT
-
+        result_data = res.json()
+        assert res.status_code == status.HTTP_403_FORBIDDEN
+        assert expected_result == result_data
