@@ -86,4 +86,4 @@ Installation requires Python 3.8 or above
 ## Enhancement
 
 - Create analysis report based on the data
-- Rating restaurnt menu on scale of 1 to 10
+- Rating restaurant menu on scale of 1 to 10
