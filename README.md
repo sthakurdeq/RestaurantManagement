@@ -1,10 +1,37 @@
-
 # Restaurant Management
 
 Company needs internal service for its’ employees which helps them to make a decision
 on lunch place.
 
-## Database
+Clone the repository using git clone command.
+```bash
+  git clone {repository}
+```
+## Setup using Docker
+- Install docker from [https://docs.docker.com/engine/install/](https://docs.docker.com/engine/install/). Below are the commands for Ubuntu 20.04.4 LTS.
+```bash
+  sudo apt install docker.io
+  sudo snap install docker
+```
+- Check the docker version
+```bash
+  docker --version
+```
+- Navigate to the project folder (put your project path)
+```bash
+  cd /home/projects/{project_name}
+```
+- Build project using docker
+```bash
+  docker-compose build
+```
+- Run project using docker
+```bash
+  docker-compose up
+```
+## Setup Using Python
+
+### Database
 
 Database used for Restaurant Management is postgresql.
 - Install the postgresql. Below are the commands for Ubuntu
@@ -17,14 +44,10 @@ Database used for Restaurant Management is postgresql.
   sudo systemctl start postgresql.service
 ```
 
-## Installation
+### Installation
 
 Installation requires Python 3.8 or above
 
-* Clone the repository using git clone command
-```bash
-  git clone git@github.com:sthakurdeq/restaurantManagement.git
-```
 * Create the virtual environment
 ```bash
   python3 -m venv {env_name}
@@ -33,7 +56,7 @@ Installation requires Python 3.8 or above
 ```bash
   source {env_name}/bin/activate
 ```
-* Go to the project folder (put your own path)
+* Navigate to project folder (put your project path)
 ```bash
   cd /home/projects/{project_name}
 ```
@@ -41,7 +64,7 @@ Installation requires Python 3.8 or above
 ```bash
   pip install -r requirements.txt
 ```
-* Migrate the tables
+* Create the tables in database
 ```bash
   python3 manage.py migrate
 ```
@@ -52,32 +75,15 @@ Installation requires Python 3.8 or above
 ## Features
 
 - Authentication
-- Creating restaurant
-- Uploading menu for restaurant (Menu for each day)
-- Creating employee
+- Creation, Deletion and List of restaurant
+- Addition and List of Items
+- Addition, Listing, Updation and deletion of menu for restaurant
+- Creation and List of employee
 - Getting current day menu
 - Voting for restaurant menu (Old version api accepted one menu, New one accepts top three menus with respective points (1 to 3))
 - Getting results for current day
 
-## Docker
-- Install docker using the below command
-```bash
-  sudo apt install docker.io
-  sudo snap install docker
-```
-
-- Check the docker version
-```bash
-  docker --version
-```
-- Build project using docker
-```bash
-  sudo docker-compose build
-```
-- Run project using docker
-``bash
-  sudo docker-compose up
-```
 ## Enhancement
 
 - Create analysis report based on the data
+- Rating restaurnt menu on scale of 1 to 10
