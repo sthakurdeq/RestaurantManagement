@@ -11,6 +11,7 @@ class UserFactory(DjangoModelFactory):
         model = User
 
     email = FuzzyText(length=15)
+    username = FuzzyText(length=12)
 
 
 class ItemFactory(DjangoModelFactory):
@@ -37,18 +38,14 @@ class MenuFactory(DjangoModelFactory):
     class Meta:
         model = Menu
 
-    restaurant = SubFactory(RestaurantFactory)
-    item = SubFactory(ItemFactory)
-    user = SubFactory(UserFactory)
-    vote = True
+    restaurants = SubFactory(RestaurantFactory)
+    day = FuzzyChoice(choices=["MON", "TUE", "WED", "THUR", "FRI"])
 
 
 class RatingsFactory(DjangoModelFactory):
-    VOTE_CHOICES = [(-1, "Dislike"), (0, "Neutral"), (1, "Like")]
-
     class Meta:
         model = Ratings
 
-    menu = SubFactory(MenuFactory)
+    # menu = SubFactory(MenuFactory)
     user = SubFactory(UserFactory)
-    vote = FuzzyChoice(VOTE_CHOICES)
+    vote = FuzzyChoice(choices=[-1, 0, 1])

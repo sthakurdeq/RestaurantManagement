@@ -10,6 +10,10 @@ from .factory_boy import UserFactory
 
 
 class TestUserAPIs(APITestCase):
+    '''
+    Test the Employee api
+    GET, POST, PUT, PATCH, DELETE
+    '''
     headers = {"Authorization": "Token token_key"}
 
     @patch(
@@ -17,6 +21,7 @@ class TestUserAPIs(APITestCase):
         MagicMock(return_value=headers["Authorization"]),
     )
     def test_employee_create(self):
+        # method to test the creation of employee
         data = {
             "username": "string",
             "first_name": "string",
@@ -43,6 +48,7 @@ class TestUserAPIs(APITestCase):
         MagicMock(return_value=headers["Authorization"]),
     )
     def test_employee_list(self):
+        # method to test the getting employee list
         created_employee = [UserFactory() for i in range(3)]
         res = self.client.get(
             reverse("user-list"),
@@ -66,6 +72,7 @@ class TestUserAPIs(APITestCase):
         MagicMock(return_value=headers["Authorization"]),
     )
     def test_employee_detail(self):
+        # method to test the employee detail
         employee = UserFactory()
         res = self.client.get(
             reverse("user-detail", args=[str(employee.id)]),
@@ -85,6 +92,7 @@ class TestUserAPIs(APITestCase):
         MagicMock(return_value=headers["Authorization"]),
     )
     def test_employee_partial_update(self):
+        # method to test the prtial update of emplyee detail
         employee = UserFactory()
         res = self.client.patch(
             reverse("user-detail", args=[str(employee.id)]),
@@ -101,6 +109,7 @@ class TestUserAPIs(APITestCase):
         MagicMock(return_value=headers["Authorization"]),
     )
     def test_employee_update(self):
+        # method to test the update of employee detail
         employee = UserFactory()
         res = self.client.put(
             reverse("user-detail", args=[str(employee.id)]),
@@ -117,13 +126,13 @@ class TestUserAPIs(APITestCase):
         MagicMock(return_value=headers["Authorization"]),
     )
     def test_employee_delete(self):
+        # method to test the deletion of employee
         employee = UserFactory()
         res = self.client.delete(
             reverse("user-detail", args=[str(employee.id)]),
             format="json",
             HTTP_AUTHORIZATION="Token token_key",
         )
-        # breakpoint()
         expected_result = {"message": "Delete function is not offered in this path."}
         result_data = res.json()
         assert res.status_code == status.HTTP_403_FORBIDDEN

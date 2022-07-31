@@ -124,7 +124,7 @@ class RatingViewSet(viewsets.ModelViewSet):
     Rating View Accept GET, POST
     return fields as per the RatingSerializer
     """
-
+    authentication_classes = [TokenAuthentication]
     queryset = Ratings.objects.all()
     serializer_class = RatingSerializer
 
@@ -168,12 +168,12 @@ class RatingViewSet(viewsets.ModelViewSet):
 
 
 @method_decorator(csrf_exempt, name="dispatch")
-# @extend_schema(methods=["GET"], exclude=True)
 class ResultViewSet(viewsets.ModelViewSet):
     """
     Result View Accept GET, POST
     """
-
+    
+    authentication_classes = [TokenAuthentication]
     today = datetime.today()
     queryset = Ratings.objects.filter(
         created_at__year=today.year,
