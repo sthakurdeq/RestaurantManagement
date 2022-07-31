@@ -37,7 +37,7 @@ class MenuFactory(DjangoModelFactory):
     class Meta:
         model = Menu
 
-    restaurant = SubFactory(ItemFactory)
+    restaurant = SubFactory(RestaurantFactory)
     item = SubFactory(ItemFactory)
     user = SubFactory(UserFactory)
     vote = True

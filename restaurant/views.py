@@ -57,6 +57,7 @@ class MenuViewSet(viewsets.ModelViewSet):
             data=data, fields=["id", "restaurants", "day", "item"]
         )
         if serializer.is_valid(raise_exception=True):
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def list(self, request):
