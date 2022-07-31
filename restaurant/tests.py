@@ -8,6 +8,11 @@ from restaurant.factory_boy import RestaurantFactory
 
 
 class TestRestaurantAPIs(APITestCase):
+    """
+    Test the Restaurant api
+    GET, POST, PUT, PATCH, DELETE
+    """
+
     headers = {"Authorization": "Token token_key"}
 
     @patch(
@@ -15,6 +20,7 @@ class TestRestaurantAPIs(APITestCase):
         MagicMock(return_value=headers["Authorization"]),
     )
     def test_restaurant_list(self):
+        # method to test the getting of restaurnt list
         created_restaurants = [RestaurantFactory() for i in range(3)]
         res = self.client.get(
             reverse("restaurant-list"),
@@ -37,6 +43,7 @@ class TestRestaurantAPIs(APITestCase):
         MagicMock(return_value=headers["Authorization"]),
     )
     def test_restaurant_creation(self):
+        # method to test the creation of restaurnt
         data = {
             "name": "ICH",
             "state": "MP",
@@ -63,6 +70,7 @@ class TestRestaurantAPIs(APITestCase):
         MagicMock(return_value=headers["Authorization"]),
     )
     def test_restaurant_detail(self):
+        # method to test the getting particular restaurnt detail
         restaurant = RestaurantFactory()
         res = self.client.get(
             reverse("restaurant-detail", args=[str(restaurant.id)]),
@@ -83,6 +91,7 @@ class TestRestaurantAPIs(APITestCase):
         MagicMock(return_value=headers["Authorization"]),
     )
     def test_restaurant_partial_update(self):
+        # method to test the partial updation of restaurnt detail
         restaurant = RestaurantFactory()
         res = self.client.patch(
             reverse("restaurant-detail", args=[str(restaurant.id)]),
@@ -99,6 +108,7 @@ class TestRestaurantAPIs(APITestCase):
         MagicMock(return_value=headers["Authorization"]),
     )
     def test_restaurant_update(self):
+        # method to test the updation of restaurnt detail
         restaurant = RestaurantFactory()
         res = self.client.put(
             reverse("restaurant-detail", args=[str(restaurant.id)]),
@@ -115,6 +125,7 @@ class TestRestaurantAPIs(APITestCase):
         MagicMock(return_value=headers["Authorization"]),
     )
     def test_restaurant_delete(self):
+        # method to test the deletion of restaurnt
         restaurant = RestaurantFactory()
         res = self.client.delete(
             reverse("restaurant-detail", args=[str(restaurant.id)]),
@@ -122,4 +133,3 @@ class TestRestaurantAPIs(APITestCase):
             HTTP_AUTHORIZATION="Token token_key",
         )
         assert res.status_code == status.HTTP_204_NO_CONTENT
-

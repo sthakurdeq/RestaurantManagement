@@ -8,6 +8,11 @@ from restaurant.factory_boy import ItemFactory
 
 
 class TestItemAPIs(APITestCase):
+    """
+    Test the Items api
+    GET, POST, PUT, PATCH, DELETE
+    """
+
     headers = {"Authorization": "Token token_key"}
 
     @patch(
@@ -15,6 +20,7 @@ class TestItemAPIs(APITestCase):
         MagicMock(return_value=headers["Authorization"]),
     )
     def test_item_list(self):
+        # method to test the geting list of items
         created_item = [ItemFactory() for i in range(3)]
         res = self.client.get(
             reverse("item-list"),
@@ -30,17 +36,16 @@ class TestItemAPIs(APITestCase):
             assert item.type == result["type"]
             assert item.description == result["description"]
 
-
     @patch(
         "rest_framework.authtoken.models.Token",
         MagicMock(return_value=headers["Authorization"]),
     )
     def test_item_creation(self):
+        # method to test the creation of item
         data = {
             "name": "Idli",
             "type": "Chineese",
             "description": "Very Delicious",
-
         }
         res = self.client.post(
             reverse("item-list"),
@@ -59,6 +64,7 @@ class TestItemAPIs(APITestCase):
         MagicMock(return_value=headers["Authorization"]),
     )
     def test_item_detail(self):
+        # method to test the particular item detail
         item = ItemFactory()
         res = self.client.get(
             reverse("item-detail", args=[str(item.id)]),
@@ -77,6 +83,7 @@ class TestItemAPIs(APITestCase):
         MagicMock(return_value=headers["Authorization"]),
     )
     def test_item_partial_update(self):
+        # method to test the prtial update of item detail
         item = ItemFactory()
         res = self.client.patch(
             reverse("item-detail", args=[str(item.id)]),
@@ -93,6 +100,7 @@ class TestItemAPIs(APITestCase):
         MagicMock(return_value=headers["Authorization"]),
     )
     def test_item_update(self):
+        # method to test the updation of item detail
         item = ItemFactory()
         res = self.client.put(
             reverse("item-detail", args=[str(item.id)]),
@@ -109,8 +117,9 @@ class TestItemAPIs(APITestCase):
         MagicMock(return_value=headers["Authorization"]),
     )
     def test_item_delete(self):
+        # method to test the deletion of item
         item = ItemFactory()
-        expected_result = {'message': 'Delete function is not offered in this path.'}
+        expected_result = {"message": "Delete function is not offered in this path."}
         res = self.client.delete(
             reverse("item-detail", args=[str(item.id)]),
             format="json",

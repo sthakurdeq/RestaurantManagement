@@ -60,14 +60,23 @@ Installation requires Python 3.8 or above
 - Getting results for current day
 
 ## Docker
-Install docker using the below command
+- Install docker using the below command
 ```bash
   sudo apt install docker.io
   sudo snap install docker
 ```
-Check the docker version
+
+- Check the docker version
 ```bash
   docker --version
+```
+- Build project using docker
+```bash
+  sudo docker-compose build
+```
+- Run project using docker
+``bash
+  sudo docker-compose up
 ```
 ## Enhancement
 
