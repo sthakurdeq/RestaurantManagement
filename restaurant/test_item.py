@@ -30,7 +30,6 @@ class TestItemAPIs(APITestCase):
             assert item.type == result["type"]
             assert item.description == result["description"]
 
-
     @patch(
         "rest_framework.authtoken.models.Token",
         MagicMock(return_value=headers["Authorization"]),
@@ -40,7 +39,6 @@ class TestItemAPIs(APITestCase):
             "name": "Idli",
             "type": "Chineese",
             "description": "Very Delicious",
-
         }
         res = self.client.post(
             reverse("item-list"),
@@ -110,7 +108,7 @@ class TestItemAPIs(APITestCase):
     )
     def test_item_delete(self):
         item = ItemFactory()
-        expected_result = {'message': 'Delete function is not offered in this path.'}
+        expected_result = {"message": "Delete function is not offered in this path."}
         res = self.client.delete(
             reverse("item-detail", args=[str(item.id)]),
             format="json",

@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Ratings, Restaurant, Item, Menu
+
+from .models import Item, Menu, Ratings, Restaurant
 
 # Register your models here.
 admin.site.register(Ratings)

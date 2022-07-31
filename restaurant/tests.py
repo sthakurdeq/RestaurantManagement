@@ -122,4 +122,3 @@ class TestRestaurantAPIs(APITestCase):
             HTTP_AUTHORIZATION="Token token_key",
         )
         assert res.status_code == status.HTTP_204_NO_CONTENT
-

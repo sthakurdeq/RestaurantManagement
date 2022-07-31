@@ -30,7 +30,6 @@ class TestRatingsAPIs(APITestCase):
             assert rating.user == result["user"]
             assert rating.vote == result["vote"]
 
-
     @patch(
         "rest_framework.authtoken.models.Token",
         MagicMock(return_value=headers["Authorization"]),
@@ -40,7 +39,6 @@ class TestRatingsAPIs(APITestCase):
             "menu": "f27aca4f-f80c-4640-b3a7-b6a7ef5dd9cb",
             "user": "e0e0fa8e-a1a4-41e1-9e70-950749f23d23",
             "vote": "-1",
-
         }
         res = self.client.post(
             reverse("rating-list"),
@@ -111,7 +109,7 @@ class TestRatingsAPIs(APITestCase):
     def test_item_delete(self):
         # breakpoint()
         rating = RatingsFactory()
-        expected_result = {'message': 'Delete function is not offered in this path.'}
+        expected_result = {"message": "Delete function is not offered in this path."}
         res = self.client.delete(
             reverse("item-detail", args=[str(rating.id)]),
             format="json",

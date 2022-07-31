@@ -8,13 +8,9 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 
 from restaurant.models import Item, Menu, Ratings, Restaurant
-from restaurant.serializers import (
-    ItemSerializer,
-    ListRatingSerializer,
-    MenuSerializer,
-    RatingSerializer,
-    RestaurantSerializer,
-)
+from restaurant.serializers import (ItemSerializer, ListRatingSerializer,
+                                    MenuSerializer, RatingSerializer,
+                                    RestaurantSerializer)
 
 
 @method_decorator(csrf_exempt, name="dispatch")

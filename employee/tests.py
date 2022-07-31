@@ -1,17 +1,18 @@
-from django.test import TestCase
 from unittest.mock import MagicMock, patch
 
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
+
 from .factory_boy import UserFactory
+
 # Create your tests here.
 
 
 class TestUserAPIs(APITestCase):
     headers = {"Authorization": "Token token_key"}
-    
-    @patch( 
+
+    @patch(
         "rest_framework.authtoken.models.Token",
         MagicMock(return_value=headers["Authorization"]),
     )
@@ -21,8 +22,8 @@ class TestUserAPIs(APITestCase):
             "first_name": "string",
             "last_name": "string",
             "email": "user@example.com",
-            "password": "string"
-            }
+            "password": "string",
+        }
         res = self.client.post(
             reverse("user-list"),
             data=data,
@@ -37,7 +38,7 @@ class TestUserAPIs(APITestCase):
         assert result_data["email"] == data["email"]
         assert result_data["password"] == data["password"]
 
-    @patch( 
+    @patch(
         "rest_framework.authtoken.models.Token",
         MagicMock(return_value=headers["Authorization"]),
     )
@@ -54,14 +55,12 @@ class TestUserAPIs(APITestCase):
         assert len(result_data) == len(created_employee)
         for employee, result in zip(created_employee, result_data):
 
-            assert str(employee.id) == result['id']
+            assert str(employee.id) == result["id"]
             assert employee.first_name == result["first_name"]
             assert employee.last_name == result["last_name"]
             assert employee.email == result["email"]
             assert employee.password == result["password"]
 
-
-    
     @patch(
         "rest_framework.authtoken.models.Token",
         MagicMock(return_value=headers["Authorization"]),
@@ -75,12 +74,11 @@ class TestUserAPIs(APITestCase):
         )
         result_data = res.json()
         assert res.status_code == status.HTTP_200_OK
-        assert str(employee.id) == result_data['id']
+        assert str(employee.id) == result_data["id"]
         assert employee.first_name == result_data["first_name"]
         assert employee.last_name == result_data["last_name"]
         assert employee.email == result_data["email"]
         assert employee.password == result_data["password"]
-        
 
     @patch(
         "rest_framework.authtoken.models.Token",
@@ -130,6 +128,3 @@ class TestUserAPIs(APITestCase):
         result_data = res.json()
         assert res.status_code == status.HTTP_403_FORBIDDEN
         assert expected_result == result_data
-
-
-

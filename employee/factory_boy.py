@@ -1,8 +1,8 @@
-from factory import SubFactory
 from factory.django import DjangoModelFactory
-from factory.fuzzy import FuzzyChoice, FuzzyText
+from factory.fuzzy import FuzzyText
 
 from employee.models import User
+
 
 class UserFactory(DjangoModelFactory):
     class Meta:
