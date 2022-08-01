@@ -37,8 +37,8 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("token/", views.obtain_auth_token),
     path("rest-auth/", include("rest_auth.urls")),
-    path("v1/", include("restaurant.urls_v1")),
-    path("v2/", include("restaurant.urls_v2")),
+    path("v1/", include("restaurant.v1.urls_v1")),
+    path("v2/", include("restaurant.v2.urls_v2")),
     path("rest-auth/registration/", include("rest_auth.registration.urls")),
     path(
         "swagger(?P<format>\.json|\.yaml)$",

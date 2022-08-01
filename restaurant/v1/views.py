@@ -4,11 +4,13 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status, viewsets
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 
 from restaurant.models import Item, Menu, Ratings, Restaurant
-from restaurant.serializers import (
+from restaurant.v1.serializers import (
     ItemSerializer,
+    ListRatingSerializer,
     MenuSerializer,
     RatingSerializer,
     RestaurantSerializer,
@@ -23,8 +25,9 @@ class RestuarantViewSet(viewsets.ModelViewSet):
     """
 
     queryset = Restaurant.objects.all()
-    # authentication_classes = [TokenAuthentication]
+    authentication_classes = [TokenAuthentication]
     serializer_class = RestaurantSerializer
+    http_method_names = ["get", "post"]
 
     def update(self, request, pk=None):
         # returns forbidden when PUT request
@@ -47,6 +50,7 @@ class MenuViewSet(viewsets.ModelViewSet):
     queryset = Menu.objects.all()
     authentication_classes = [TokenAuthentication]
     serializer_class = MenuSerializer
+    http_method_names = ["get", "post"]
 
     def create(self, request):
         # Note the use of `get_queryset()` instead of `self.queryset`
@@ -55,6 +59,7 @@ class MenuViewSet(viewsets.ModelViewSet):
             data=data, fields=["id", "restaurants", "day", "item"]
         )
         if serializer.is_valid(raise_exception=True):
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def list(self, request):
@@ -72,6 +77,8 @@ class TodayMenuViewSet(viewsets.ReadOnlyModelViewSet):
     Menu View Accept GET
     return todays menu based on date and day
     """
+
+    http_method_names = ["get"]
 
     authentication_classes = [TokenAuthentication]
     today = datetime.today()
@@ -99,6 +106,7 @@ class ItemViewSet(viewsets.ModelViewSet):
     return fields as per the ItemSerializer
     """
 
+    http_method_names = ["get", "post"]
     authentication_classes = [TokenAuthentication]
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
@@ -126,8 +134,33 @@ class RatingViewSet(viewsets.ModelViewSet):
     return fields as per the RatingSerializer
     """
 
+    authentication_classes = [TokenAuthentication]
     queryset = Ratings.objects.all()
     serializer_class = RatingSerializer
+    http_method_names = ["get", "post"]
+
+    def create(self, request):
+        # Note the use of `get_queryset()` instead of `self.queryset`
+        today = datetime.today()
+        user_rating = Ratings.objects.filter(
+            menu=request.data.get("menu"),
+            user=request.user,
+            created_at__year=today.year,
+            created_at__month=today.month,
+            created_at__day=today.day,
+        )
+        if len(user_rating) >= 1:
+            raise ValidationError({"rating": "user can rate only one menu."})
+        serializer = RatingSerializer(data=request.data, context={"request": request})
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def list(self, request):
+        # Note the use of `get_queryset()` instead of `self.queryset`
+        queryset = self.get_queryset()
+        serializer = ListRatingSerializer(queryset, many=True)
+        return Response(serializer.data)
 
     def update(self, request, pk=None):
         # returns forbidden when PUT request
@@ -143,3 +176,20 @@ class RatingViewSet(viewsets.ModelViewSet):
         # returns forbidden when DELETE request
         response = {"message": "Delete function is not offered in this path."}
         return Response(response, status=status.HTTP_403_FORBIDDEN)
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class ResultViewSet(viewsets.ModelViewSet):
+    """
+    Result View Accept GET, POST
+    """
+
+    authentication_classes = [TokenAuthentication]
+    today = datetime.today()
+    queryset = Ratings.objects.filter(
+        created_at__year=today.year,
+        created_at__month=today.month,
+        created_at__day=today.day,
+    )
+    serializer_class = ListRatingSerializer
+    http_method_names = ["get", "post"]
