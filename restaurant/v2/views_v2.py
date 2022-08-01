@@ -8,6 +8,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 
 from restaurant.models import Ratings
+from restaurant.v1.serializers import RatingSerializer
 from restaurant.v1.views import RatingViewSet
 from restaurant.v2.serializers_v2 import RatingV2Serializer
 
@@ -35,7 +36,19 @@ class RatingV2ViewSet(RatingViewSet):
         )
         if len(user_rating) >= 1:
             raise ValidationError({"rating": "user can rate menu once a day."})
-        serializer = RatingV2Serializer(data=request.data, context={"request": request})
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        menus = request.data["menu"]
+        if len(menus) >= 3:
+            raise ValidationError({"menu": "Cannot rate more than 3 menus"})
+
+        if len(menus.values()) != len(set(menus.values())):
+            raise ValidationError({"menu": "Multiple menus cannot have same rating"})
+
+        for menu in menus:
+            data = {"user": request.user, "menu": menu, "vote_value": menus[menu]}
+
+            serializer = RatingSerializer(data=data, context={"request": request})
+            if serializer.is_valid(raise_exception=True):
+                serializer.save()
+        return Response(
+            {"Result": "Thanks for menu voting"}, status=status.HTTP_201_CREATED
+        )

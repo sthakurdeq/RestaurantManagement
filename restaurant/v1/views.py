@@ -98,6 +98,14 @@ class TodayMenuViewSet(viewsets.ReadOnlyModelViewSet):
     )
     serializer_class = MenuSerializer
 
+    def list(self, request):
+        # Note the use of `get_queryset()` instead of `self.queryset`
+        queryset = self.get_queryset()
+        serializer = MenuSerializer(
+            queryset, many=True, fields=["id", "restaurants", "day", "items"]
+        )
+        return Response(serializer.data)
+
 
 @method_decorator(csrf_exempt, name="dispatch")
 class ItemViewSet(viewsets.ModelViewSet):

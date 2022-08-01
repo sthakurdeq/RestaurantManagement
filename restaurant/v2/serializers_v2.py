@@ -14,17 +14,7 @@ class RatingV2Serializer(serializers.ModelSerializer):
     menu = serializers.DictField(
         child=serializers.IntegerField(min_value=1, max_value=3)
     )
-    vote_value = serializers.IntegerField(source="vote")
 
     class Meta:
         model = Ratings
-        fields = ["id", "menu", "user", "vote_value"]
-
-    def validate(self, data):
-        # validate the rating (should be between 1 to 3 and Multiple menus cannot have same rating)
-        data = dict(data)
-        if len(data["menu"].values()) >= 3:
-            raise ValidationError({"menu": "Cannot rate more than 3 menus"})
-
-        if len(data["menu"].values()) != len(set(data["menu"].values())):
-            raise ValidationError({"menu": "Multiple menus cannot have same rating"})
+        fields = ["id", "menu", "user"]
