@@ -53,38 +53,6 @@ class TestRatingsAPIs(APITestCase):
             assert str(rating.user).strip() == result["user"].strip()
             assert rating.vote == result["vote"]
 
-
-    @patch(
-        "rest_framework.authtoken.models.Token",
-        MagicMock(return_value=headers["Authorization"]),
-    )
-    # def test_rating_creation(self):
-    #     user = UserFactory(username='testuser', password='12345')
-    #     mock_request = Mock(return_value=user)
-    #     mock_request.user = user
-    #     restaurant = RestaurantFactory()
-    #     menu = MenuFactory(restaurants=restaurant)
-    #     created_item = [ItemFactory() for i in range(3)]
-    #     menu.item.add(created_item[0])
-    #     menu.item.add(created_item[1])
-    #     menu.item.add(created_item[2])
-
-    #     res = self.client.post(
-    #         reverse("rating-list"),
-    #         data = {
-    #         "menu": str(menu.id),
-    #         "vote": "1",
-    #     },
-    #         format="json",
-    #         HTTP_AUTHORIZATION="Token token_key",
-    #     )
-    #     # breakpoint()
-    #     result_data = res.json()
-    #     assert res.status_code == status.HTTP_201_CREATED
-    #     assert result_data["menu"] == data["menu"]
-    #     assert result_data["user"] == data["user"]
-    #     assert result_data["vote"] == data["vote"]
-
     @patch(
         "rest_framework.authtoken.models.Token",
         MagicMock(return_value=headers["Authorization"]),
