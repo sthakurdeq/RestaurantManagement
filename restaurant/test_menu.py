@@ -44,39 +44,32 @@ class TestMenuAPIs(APITestCase):
             item_ids = [item_result["id"] for item_result in result["items"]]
             assert item_ids == [str(a.id) for a in menu_data.item.all()]
 
-    # @patch(
-    #     "rest_framework.authtoken.models.Token",
-    #     MagicMock(return_value=headers["Authorization"]),
-    # )
-    # def test_menu_creation(self):
-    #     # method to test the creation of menu
-    #     data = {
-    #         "restaurants": "UUID('986abf1c-a524-4557-897d-d8dbeb3b6af0')",
-    #         "day": "MON",
-    #         "item": [
-    #             {
-    #                 'id': "UUID('91d787e4-27bd-4b6a-ac0a-54019d7fad49')",
-    #                 'name': 'OQImnsAyWiblokn'
-    #             }
-    #         ],
+    @patch(
+        "rest_framework.authtoken.models.Token",
+        MagicMock(return_value=headers["Authorization"]),
+    )
+    def test_menu_creation(self):
+        # method to test the creation of menu
+        created_item = [str(ItemFactory().id) for i in range(3)]
+        restaurant = RestaurantFactory()
+        data = {
+            "restaurants": restaurant.id,
+            "day": "MON",
+            "item": created_item
+        }
 
-    #     }
-    #     # restaurant = RestaurantFactory()
-    #     # menu = MenuFactory(restaurants=restaurant)
-    #     # menu.item.add(ItemFactory())
-    #     # breakpoint()
-    #     res = self.client.post(
-    #         reverse("menu-list"),
-    #         data=data,
-    #         format="json",
-    #         HTTP_AUTHORIZATION="Token token_key",
-    #     )
-    #     result_data = res.json()
-    #     breakpoint()
-    #     assert res.status_code == status.HTTP_201_CREATED
-    #     assert result_data["restaurants"] == data["restaurants"]
-    #     assert result_data["day"] == data["day"]
-    #     assert result_data["item"] == data["item"]
+        res = self.client.post(
+            reverse("menu-list"),
+            data=data,
+            format="json",
+            HTTP_AUTHORIZATION="Token token_key",
+        )
+        result_data = res.json()
+        assert res.status_code == status.HTTP_201_CREATED
+        assert result_data["restaurants"] == str(data["restaurants"])
+        assert result_data["day"] == data["day"]
+        item_ids = [item_result for item_result in result_data["item"]]
+        assert set(item_ids) == set(data['item'])
 
     @patch(
         "rest_framework.authtoken.models.Token",
@@ -127,29 +120,38 @@ class TestMenuAPIs(APITestCase):
         item_ids = [item_result for item_result in result_data["item"]]
         assert item_ids == [str(a.id) for a in menu.item.all()]
 
-    # @patch(
-    #     "rest_framework.authtoken.models.Token",
-    #     MagicMock(return_value=headers["Authorization"]),
-    # )
-    # def test_menu_update(self):
-    #     # method to test the updation of menu
-    #     restaurant = RestaurantFactory()
-    #     menu = MenuFactory(restaurants=restaurant)
-    #     created_item = [ItemFactory() for a in range(2)]
-    #     menu.item.add(created_item[0])
-    #     menu.item.add(created_item[1])
-    #     res = self.client.put(
-    #         reverse("menu-detail", args=[str(menu.id)]),
-    #         format="json",
-    #         HTTP_AUTHORIZATION="Token token_key",
-    #     )
-    #     result_data = res.json()
-    #     assert res.status_code == status.HTTP_200_OK
-    #     assert str(menu.id) == result_data["id"]
-    #     assert str(menu.restaurants_id) == result_data["restaurants"]
-    #     assert menu.day == result_data["day"]
-    #     item_ids = [item_result for item_result in result_data["item"]]
-    #     assert item_ids == [str(a.id) for a in menu.item.all()]
+    @patch(
+        "rest_framework.authtoken.models.Token",
+        MagicMock(return_value=headers["Authorization"]),
+    )
+    def test_menu_update(self):
+        # method to test the updation of menu
+        restaurant = RestaurantFactory()
+        menu = MenuFactory(restaurants=restaurant)
+        created_item = [str(ItemFactory().id) for i in range(3)]
+        # menu.item.add(created_item[0])
+        # menu.item.add(created_item[1])
+        # created_item = [str(ItemFactory().id) for i in range(3)]
+        # restaurant = RestaurantFactory()
+        data = {
+            "restaurants": restaurant.id,
+            "day": "MON",
+            "item": created_item
+        }
+        res = self.client.put(
+            reverse("menu-detail", args=[str(menu.id)]),
+            data = data,
+            format="json",
+            HTTP_AUTHORIZATION="Token token_key",
+        )
+        result_data = res.json()
+        # breakpoint()
+        assert res.status_code == status.HTTP_200_OK
+        assert str(menu.id) == result_data["id"]
+        assert str(menu.restaurants_id) == result_data["restaurants"]
+        assert menu.day == result_data["day"]
+        item_ids = [item_result for item_result in result_data["item"]]
+        assert item_ids == [str(a.id) for a in menu.item.all()]
 
     @patch(
         "rest_framework.authtoken.models.Token",
