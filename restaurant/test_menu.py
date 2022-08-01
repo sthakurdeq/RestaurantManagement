@@ -137,7 +137,7 @@ class TestMenuAPIs(APITestCase):
         # restaurant = RestaurantFactory()
         data = {
             "restaurants": restaurant.id,
-            "day": "MON",
+            "day": menu.day,
             "item": created_item
         }
         res = self.client.put(
@@ -151,6 +151,7 @@ class TestMenuAPIs(APITestCase):
         assert res.status_code == status.HTTP_200_OK
         assert str(menu.id) == result_data["id"]
         assert str(menu.restaurants_id) == result_data["restaurants"]
+        # breakpoint()
         assert menu.day == result_data["day"]
         item_ids = [item_result for item_result in result_data["item"]]
         assert item_ids == [str(a.id) for a in menu.item.all()]
