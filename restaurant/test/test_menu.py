@@ -92,33 +92,3 @@ class TestMenuAPIs(APITestCase):
         assert menu.day == result_data["day"]
         item_ids = [item_result for item_result in result_data["item"]]
         assert item_ids == [str(a.id) for a in menu.item.all()]
-
-    @patch(
-        "rest_framework.authtoken.models.Token",
-        MagicMock(return_value=headers["Authorization"]),
-    )
-    def test_today_menu_list(self):
-        # method to test the getting list of menus
-        for j in range(3):
-            restaurant = RestaurantFactory()
-            menu = MenuFactory(restaurants=restaurant)
-            created_item = [ItemFactory() for i in range(3)]
-            created_menu = [menu.item.add(created_item[i]) for i in range(1, 3)]
-        res = self.client.get(
-            reverse("today_menu-list"),
-            format="json",
-            HTTP_AUTHORIZATION="Token token_key",
-        )
-        result_data = res.json()
-        res = self.client.get(
-            reverse("today_menu-list"),
-            format="json",
-            HTTP_AUTHORIZATION="Token token_key",
-        )
-        assert res.status_code == status.HTTP_200_OK
-        for menu_data, result in zip(created_menu, result_data):
-            assert str(menu_data.id) == result["id"]
-            assert str(menu_data.restaurants_id) == result["restaurants"]
-            assert menu_data.day == result["day"]
-            item_ids = [item_result["id"] for item_result in result["items"]]
-            assert item_ids == [str(a.id) for a in menu_data.item.all()]
