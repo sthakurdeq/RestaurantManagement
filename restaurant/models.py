@@ -89,7 +89,7 @@ class Ratings(AbstructBaseModel):
     timestamp : Todays date time
     """
 
-    VOTE_CHOICES = [(-1, "Dislike"), (0, "Neutral"), (1, "Like")]
+    VOTE_CHOICES = [(1, "Low"), (2, "Mid"), (3, "High")]
 
     menu = models.ForeignKey(
         Menu, related_name="menu_ratings", on_delete=models.CASCADE
@@ -100,4 +100,3 @@ class Ratings(AbstructBaseModel):
     vote = models.CharField(
         choices=VOTE_CHOICES, max_length=10, default=VOTE_CHOICES[0][1]
     )
-    rate = models.JSONField(null=True)

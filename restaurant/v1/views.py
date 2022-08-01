@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.db.models import Sum
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status, viewsets
@@ -8,13 +9,9 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 
 from restaurant.models import Item, Menu, Ratings, Restaurant
-from restaurant.v1.serializers import (
-    ItemSerializer,
-    ListRatingSerializer,
-    MenuSerializer,
-    RatingSerializer,
-    RestaurantSerializer,
-)
+from restaurant.v1.serializers import (ItemSerializer, ListRatingSerializer,
+                                       MenuSerializer, RatingSerializer,
+                                       RestaurantSerializer)
 
 
 @method_decorator(csrf_exempt, name="dispatch")
@@ -167,7 +164,7 @@ class RatingViewSet(viewsets.ModelViewSet):
     def list(self, request):
         # Note the use of `get_queryset()` instead of `self.queryset`
         queryset = self.get_queryset()
-        serializer = ListRatingSerializer(queryset, many=True)
+        serializer = RatingSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def update(self, request, pk=None):
@@ -199,5 +196,6 @@ class ResultViewSet(viewsets.ModelViewSet):
         created_at__month=today.month,
         created_at__day=today.day,
     )
+    queryset = queryset.values('menu').annotate(total_vote=Sum('vote')).order_by('-total_vote')
     serializer_class = ListRatingSerializer
-    http_method_names = ["get", "post"]
+    http_method_names = ["get"]

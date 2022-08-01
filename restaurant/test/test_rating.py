@@ -4,12 +4,8 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from restaurant.factory_boy import (
-    ItemFactory,
-    MenuFactory,
-    RatingsFactory,
-    RestaurantFactory,
-)
+from restaurant.factory_boy import (ItemFactory, MenuFactory, RatingsFactory,
+                                    RestaurantFactory)
 
 
 class TestRatingsAPIs(APITestCase):

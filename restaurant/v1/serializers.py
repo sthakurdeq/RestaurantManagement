@@ -85,8 +85,10 @@ class ListRatingSerializer(serializers.ModelSerializer):
     fields: id, menu, user, rating
     """
 
-    user = serializers.CharField(source="user.username")
+    # user = serializers.CharField(source="user.username")
+    menu_id = serializers.CharField(source="menu")
+    total_vote = serializers.IntegerField()
 
     class Meta:
         model = Ratings
-        fields = ["id", "menu", "user", "vote"]
+        fields = ["id", "menu_id", "total_vote"]
