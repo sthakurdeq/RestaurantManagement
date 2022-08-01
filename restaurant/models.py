@@ -100,3 +100,4 @@ class Ratings(AbstructBaseModel):
     vote = models.CharField(
         choices=VOTE_CHOICES, max_length=10, default=VOTE_CHOICES[0][1]
     )
+    rate = models.JSONField(null=True)
