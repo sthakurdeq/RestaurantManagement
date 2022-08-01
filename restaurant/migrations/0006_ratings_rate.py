@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('restaurant', '0005_remove_ratings_rating'),
+        ("restaurant", "0005_remove_ratings_rating"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='ratings',
-            name='rate',
+            model_name="ratings",
+            name="rate",
             field=models.JSONField(null=True),
         ),
     ]

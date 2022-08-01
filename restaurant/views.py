@@ -27,6 +27,7 @@ class RestuarantViewSet(viewsets.ModelViewSet):
     queryset = Restaurant.objects.all()
     authentication_classes = [TokenAuthentication]
     serializer_class = RestaurantSerializer
+    http_method_names = ["get", "post"]
 
     def update(self, request, pk=None):
         # returns forbidden when PUT request
@@ -49,6 +50,7 @@ class MenuViewSet(viewsets.ModelViewSet):
     queryset = Menu.objects.all()
     authentication_classes = [TokenAuthentication]
     serializer_class = MenuSerializer
+    http_method_names = ["get", "post"]
 
     def create(self, request):
         # Note the use of `get_queryset()` instead of `self.queryset`
@@ -76,6 +78,8 @@ class TodayMenuViewSet(viewsets.ReadOnlyModelViewSet):
     return todays menu based on date and day
     """
 
+    http_method_names = ["get"]
+
     authentication_classes = [TokenAuthentication]
     today = datetime.today()
     day = {
@@ -102,6 +106,7 @@ class ItemViewSet(viewsets.ModelViewSet):
     return fields as per the ItemSerializer
     """
 
+    http_method_names = ["get", "post"]
     authentication_classes = [TokenAuthentication]
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
@@ -129,13 +134,15 @@ class RatingViewSet(viewsets.ModelViewSet):
     return fields as per the RatingSerializer
     """
 
-    authentication_classes = [TokenAuthentication]
+    # authentication_classes = [TokenAuthentication]
     queryset = Ratings.objects.all()
     serializer_class = RatingSerializer
+    http_method_names = ["get", "post"]
 
     def create(self, request):
         # Note the use of `get_queryset()` instead of `self.queryset`
         today = datetime.today()
+        # breakpoint()
         user_rating = Ratings.objects.filter(
             menu=request.data.get("menu"),
             user=request.user,
@@ -186,4 +193,4 @@ class ResultViewSet(viewsets.ModelViewSet):
         created_at__day=today.day,
     )
     serializer_class = ListRatingSerializer
-    http_method_name = ["GET"]
+    http_method_names = ["get", "post"]

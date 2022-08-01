@@ -72,15 +72,16 @@ class RatingSerializer(serializers.ModelSerializer):
     """
 
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    vote_value = serializers.IntegerField(source="vote")
 
     class Meta:
         model = Ratings
-        fields = ["id", "menu", "user", "vote"]
+        fields = ["id", "menu", "user", "vote_value"]
 
 
 class ListRatingSerializer(serializers.ModelSerializer):
     """
-    Rating serializer with fields to controll displayed fields
+    Rating serializer with fields to controll displayed fields.
     fields: id, menu, user, rating
     """
 
