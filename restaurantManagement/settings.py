@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-f6t-y0!-nvo%q1$tz)f^w31+v8!4c-ktizcb8!-@iun8xt&hgp"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["0.0.0.0", "*"]
+ALLOWED_HOSTS = ["localhost", "*"]
 
 
 # Application definition
@@ -88,16 +88,6 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME':'restaurant',
-#         'USER':'tester',
-#         'PASSWORD':'test_password',
-#         'HOST':'localhost',
-#         'PORT':'5432'
-#     }
-# }
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
