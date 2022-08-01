@@ -1,14 +1,17 @@
-from unittest.mock import MagicMock, patch
-
+from re import U
+from unittest.mock import MagicMock, patch, Mock
+from django.test.client import RequestFactory
 from django.urls import reverse
+from requests import request
 from rest_framework import status
 from rest_framework.test import APITestCase
-
+from restaurant import views as restautant_views
 from restaurant.factory_boy import (
     ItemFactory,
     MenuFactory,
     RatingsFactory,
     RestaurantFactory,
+    UserFactory,
 )
 
 
@@ -165,3 +168,38 @@ class TestRatingsAPIs(APITestCase):
         result_data = res.json()
         assert res.status_code == status.HTTP_403_FORBIDDEN
         assert expected_result == result_data
+
+    @patch(
+    "rest_framework.authtoken.models.Token",
+    MagicMock(return_value=headers["Authorization"]),
+    )
+    def test_today_menu_list(self):
+        # method to test the getting list of menus
+        created_menu = []
+        for j in range(3):
+            restaurant = RestaurantFactory()
+            menu = MenuFactory(restaurants=restaurant)
+            created_item = [ItemFactory() for i in range(3)]
+            menu.item.add(created_item[0])
+            menu.item.add(created_item[1])
+            menu.item.add(created_item[2])
+            created_menu.append(menu)
+        res = self.client.get(
+            reverse("today_menu-list"),
+            format="json",
+            HTTP_AUTHORIZATION="Token token_key",
+        )
+        result_data = res.json()
+        res = self.client.get(
+            reverse("today_menu-list"),
+            format="json",
+            HTTP_AUTHORIZATION="Token token_key",
+        )
+        assert res.status_code == status.HTTP_200_OK
+        for menu_data, result in zip(created_menu, result_data):
+            assert str(menu_data.id) == result["id"]
+            assert str(menu_data.restaurants_id) == result["restaurants"]
+            assert menu_data.day == result["day"]
+            item_ids = [item_result["id"] for item_result in result["items"]]
+            assert item_ids == [str(a.id) for a in menu_data.item.all()]
+
