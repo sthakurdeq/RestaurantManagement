@@ -21,4 +21,12 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     depends_on:
+      - migration
+      - db
+  migration:
+    image: postgres
+    command: python manage.py migrate
+    volumes:
+      - .:/code
+    depends_on:
       - db
