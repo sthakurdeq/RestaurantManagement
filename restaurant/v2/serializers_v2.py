@@ -18,10 +18,10 @@ class RatingV2Serializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ratings
-        fields = ["id", "menu", "user", "vote"]
+        fields = ["id", "menu", "user", "vote_value"]
 
     def validate(self, data):
-        # breakpoint()
+        # validate the rating (should be between 1 to 3 and Multiple menus cannot have same rating)
         data = dict(data)
         if len(data["menu"].values()) >= 3:
             raise ValidationError({"menu": "Cannot rate more than 3 menus"})

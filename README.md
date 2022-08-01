@@ -8,7 +8,7 @@ Clone the repository using git clone command.
   git clone {repository}
 ```
 ## Setup using Docker
-- Install docker from [https://docs.docker.com/engine/install/](https://docs.docker.com/engine/install/). Below are the commands for Ubuntu 20.04.4 LTS.
+- Install docker from [https://docs.docker.com/engine/install/ubuntu/](https://docs.docker.com/engine/install/ubuntu/) and [https://docs.docker.com/engine/install/linux-postinstall/](https://docs.docker.com/engine/install/linux-postinstall/).Below are the commands for Ubuntu 20.04.4 LTS.
 ```bash
   sudo apt install docker.io
   sudo snap install docker
