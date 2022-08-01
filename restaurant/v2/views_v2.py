@@ -2,14 +2,14 @@ from datetime import datetime
 
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework import status, viewsets
+from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 
 from restaurant.models import Ratings
-from restaurant.serializers_v2 import RatingV2Serializer
-from restaurant.views import RatingViewSet
+from restaurant.v1.views import RatingViewSet
+from restaurant.v2.serializers_v2 import RatingV2Serializer
 
 
 @method_decorator(csrf_exempt, name="dispatch")

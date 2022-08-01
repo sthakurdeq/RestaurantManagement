@@ -1,19 +1,14 @@
-from re import U
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import MagicMock, patch
 
-from django.test.client import RequestFactory
 from django.urls import reverse
-from requests import request
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from restaurant import views as restautant_views
 from restaurant.factory_boy import (
     ItemFactory,
     MenuFactory,
     RatingsFactory,
     RestaurantFactory,
-    UserFactory,
 )
 
 

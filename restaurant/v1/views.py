@@ -8,7 +8,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 
 from restaurant.models import Item, Menu, Ratings, Restaurant
-from restaurant.serializers import (
+from restaurant.v1.serializers import (
     ItemSerializer,
     ListRatingSerializer,
     MenuSerializer,
@@ -134,7 +134,7 @@ class RatingViewSet(viewsets.ModelViewSet):
     return fields as per the RatingSerializer
     """
 
-    # authentication_classes = [TokenAuthentication]
+    authentication_classes = [TokenAuthentication]
     queryset = Ratings.objects.all()
     serializer_class = RatingSerializer
     http_method_names = ["get", "post"]
@@ -142,7 +142,6 @@ class RatingViewSet(viewsets.ModelViewSet):
     def create(self, request):
         # Note the use of `get_queryset()` instead of `self.queryset`
         today = datetime.today()
-        # breakpoint()
         user_rating = Ratings.objects.filter(
             menu=request.data.get("menu"),
             user=request.user,

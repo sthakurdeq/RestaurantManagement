@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from restaurant.models import Item, Menu, Ratings, Restaurant
+from restaurant.models import Ratings
 
 
 class RatingV2Serializer(serializers.ModelSerializer):

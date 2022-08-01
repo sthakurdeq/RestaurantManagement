@@ -1,6 +1,6 @@
 from rest_framework.routers import DefaultRouter
 
-from restaurant.views import (
+from restaurant.v1.views import (
     ItemViewSet,
     MenuViewSet,
     RatingViewSet,
