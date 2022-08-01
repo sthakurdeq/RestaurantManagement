@@ -83,11 +83,11 @@ class TodayMenuViewSet(viewsets.ReadOnlyModelViewSet):
     authentication_classes = [TokenAuthentication]
     today = datetime.today()
     day = {
-        1: "MON",
-        2: "TUE",
-        3: "WED",
-        4: "THUR",
-        5: "FRI",
+        0: "MON",
+        1: "TUE",
+        2: "WED",
+        3: "THUR",
+        4: "FRI",
     }
     weekday = datetime.now().weekday()
     queryset = Menu.objects.filter(
